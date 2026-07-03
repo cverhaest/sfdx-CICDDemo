@@ -72,8 +72,8 @@ deploy:sandboxdev:
   script:
     - sf project deploy start --source-dir force-app --target-org sandboxdev --test-level RunLocalTests
   environment:
-  name: sandboxdev
-  url: <REDACTED>
+    name: sandboxdev
+    url: <REDACTED>
   rules:
     - if: '$CI_COMMIT_BRANCH == "develop"'
 
@@ -83,8 +83,8 @@ deploy:sandboxuat:
   script:
     - sf project deploy start --source-dir force-app --target-org sandboxuat --test-level RunAllTestsInOrg
   environment:
-  name: sandboxuat
-  url: <REDACTED>
+    name: sandboxuat
+    url: <REDACTED>
   when: manual
   rules:
     - if: '$CI_COMMIT_BRANCH == "main"'
