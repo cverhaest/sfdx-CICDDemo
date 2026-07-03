@@ -1,0 +1,106 @@
+image: salesforce/cli:latest-full
+
+stages:
+  - validate
+  - test
+  - deploy
+
+# ── Cache pour accélérer les jobs ──────────────────────────────────
+cache:
+  paths:
+    - node_modules/
+    - .sf/
+
+# ── Template d'authentification ────────────────────────────────────
+.auth_sandboxdev: &auth_sandbox
+  before_script:
+    - echo "$SF_AUTH_URL_SANDBOXDEV" > /tmp/auth_url.txt
+    - sf org login sfdx-url --sfdx-url-file /tmp/auth_url.txt --alias sandboxdev --set-default
+    - rm /tmp/auth_url.txt
+
+.auth_sandboxuat: &auth_uat
+  before_script:
+    - echo "$SF_AUTH_URL_SANDBOXUAT" > /tmp/auth_url.txt
+    - sf org login sfdx-url --sfdx-url-file /tmp/auth_url.txt --alias sandboxuat --set-default
+    - rm /tmp/auth_url.txt
+
+# ══════════════════════════════════════════════════════════════════
+# STAGE 1 — VALIDATE
+# ══════════════════════════════════════════════════════════════════
+validate:sandboxdev:
+  stage: validate
+  <<: *auth_sandboxdev
+  script:
+    - sf project deploy validate
+  `--source-dir force-app`
+  `--target-org sandboxdev`
+  `--test-level RunLocalTests`
+  rules:
+    - if: '$CI_COMMIT_BRANCH =~ /^feature\//'
+    - if: '$CI_COMMIT_BRANCH == "develop"'
+
+validate:sandboxuat:
+  stage: validate
+  <<: *auth_sandboxuat
+  script:
+    - sf project deploy validate
+  `--source-dir force-app`
+  `--target-org sandboxuat`
+  `--test-level RunAllTestsInOrg`
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main"'
+
+# ══════════════════════════════════════════════════════════════════
+# STAGE 2 — TEST (Apex)
+# ══════════════════════════════════════════════════════════════════
+test:apex:
+  stage: test
+  <<: *auth_sandboxdev
+  script:
+    - sf apex run test
+  `--target-org sandboxdev`
+  `--test-level RunLocalTests`
+  `--output-dir ./test-results`
+  `--result-format junit`
+  artifacts:
+  `when: always`
+  `reports:`
+  `junit: test-results/*.xml`
+  `paths:`
+      - test-results/
+  `expire_in: 7 days`
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "develop"'
+    - if: '$CI_COMMIT_BRANCH == "main"'
+
+# ══════════════════════════════════════════════════════════════════
+# STAGE 3 — DEPLOY
+# ══════════════════════════════════════════════════════════════════
+deploy:sandboxdev:
+  stage: deploy
+  <<: *auth_sandboxdev
+  script:
+    - sf project deploy start
+  `--source-dir force-app`
+  `--target-org sandboxdev`
+  `--test-level RunLocalTests`
+  environment:
+  `name: sandboxdev`
+  `url: <REDACTED>`
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "develop"'
+
+deploy:sandboxuat:
+  stage: deploy
+  <<: *auth_sandboxuat
+  script:
+    - sf project deploy start
+  `--source-dir force-app`
+  `--target-org sandboxuat`
+  `--test-level RunAllTestsInOrg`
+  environment:
+  `name: sandboxuat`
+  `url: <REDACTED>`
+  when: manual
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main"'
