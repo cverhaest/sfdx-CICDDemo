@@ -14,15 +14,11 @@ cache:
 # ── Template d'authentification ────────────────────────────────────
 .auth_sandboxdev: &auth_sandboxdev
   before_script:
-    - echo "$SF_AUTH_URL_SANDBOXDEV" > /tmp/auth_url.txt
-    - sf org login sfdx-url --sfdx-url-file /tmp/auth_url.txt --alias sandboxdev --set-default
-    - rm /tmp/auth_url.txt
+    - sf org login sfdx-url --sfdx-url-file "$SF_AUTH_URL_SANDBOXDEV" --alias sandboxdev --set-default
 
 .auth_sandboxuat: &auth_sandboxuat
   before_script:
-    - echo "$SF_AUTH_URL_SANDBOXUAT" > /tmp/auth_url.txt
-    - sf org login sfdx-url --sfdx-url-file /tmp/auth_url.txt --alias sandboxuat --set-default
-    - rm /tmp/auth_url.txt
+    - sf org login sfdx-url --sfdx-url-file "$SF_AUTH_URL_SANDBOXUAT" --alias sandboxuat --set-default
 
 # ══════════════════════════════════════════════════════════════════
 # STAGE 1 — VALIDATE
