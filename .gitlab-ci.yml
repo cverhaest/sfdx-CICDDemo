@@ -12,13 +12,13 @@ cache:
     - .sf/
 
 # ── Template d'authentification ────────────────────────────────────
-.auth_sandboxdev: &auth_sandbox
+.auth_sandboxdev: &auth_sandboxdev
   before_script:
     - echo "$SF_AUTH_URL_SANDBOXDEV" > /tmp/auth_url.txt
     - sf org login sfdx-url --sfdx-url-file /tmp/auth_url.txt --alias sandboxdev --set-default
     - rm /tmp/auth_url.txt
 
-.auth_sandboxuat: &auth_uat
+.auth_sandboxuat: &auth_sandboxuat
   before_script:
     - echo "$SF_AUTH_URL_SANDBOXUAT" > /tmp/auth_url.txt
     - sf org login sfdx-url --sfdx-url-file /tmp/auth_url.txt --alias sandboxuat --set-default
