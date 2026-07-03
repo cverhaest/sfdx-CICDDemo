@@ -53,12 +53,12 @@ test:apex:
   script:
     - sf apex run test --target-org sandboxdev --test-level RunLocalTests --output-dir ./test-results --result-format junit
   artifacts:
-  when: always
-  reports:
-  junit: test-results/*.xml
-  paths:
-      - test-results/
-  expire_in: 7 days
+    when: always
+    reports:
+    junit: test-results/*.xml
+    paths:
+        - test-results/
+    expire_in: 7 days
   rules:
     - if: '$CI_COMMIT_BRANCH == "develop"'
     - if: '$CI_COMMIT_BRANCH == "main"'
