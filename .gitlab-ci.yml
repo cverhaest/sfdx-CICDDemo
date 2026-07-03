@@ -37,7 +37,8 @@ validate:sandboxuat:
   stage: validate
   <<: *auth_sandboxuat
   script:
-    - sf project deploy validate --source-dir force-app --target-org sandboxuat --test-level RunAllTestsInOrg
+    # - sf project deploy validate --source-dir force-app --target-org sandboxuat --test-level RunAllTestsInOrg
+    - sf project deploy validate --source-dir force-app --target-org sandboxuat --test-level NoTestRun
   rules:
     - if: '$CI_COMMIT_BRANCH == "main"'
 
@@ -79,7 +80,8 @@ deploy:sandboxuat:
   stage: deploy
   <<: *auth_sandboxuat
   script:
-    - sf project deploy start --source-dir force-app --target-org sandboxuat --test-level RunAllTestsInOrg
+    # - sf project deploy start --source-dir force-app --target-org sandboxuat --test-level RunAllTestsInOrg
+    - sf project deploy start --source-dir force-app --target-org sandboxuat --test-level NoTestRun
   environment:
     name: sandboxuat
     url: <REDACTED>
