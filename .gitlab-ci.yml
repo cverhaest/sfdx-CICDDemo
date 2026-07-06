@@ -47,7 +47,7 @@ test:apex:
   stage: test
   <<: *auth_sandboxdev
   script:
-    - sf apex run test --target-org sandboxdev --test-level RunLocalTests --output-dir ./test-results --result-format junit ‑‑ignore‑conflicts
+    - sf apex run test --target-org sandboxdev --test-level RunLocalTests --output-dir ./test-results --result-format junit
   artifacts:
     when: always
     reports:
@@ -67,7 +67,7 @@ deploy:sandboxdev:
   <<: *auth_sandboxdev
   script:
     # - sf project deploy start --source-dir force-app --target-org sandboxdev --test-level RunLocalTests
-    - sf project deploy start --source-dir force-app --target-org sandboxdev --test-level NoTestRun ‑‑ignore‑conflicts
+    - sf project deploy start --source-dir force-app --target-org sandboxdev --test-level NoTestRun --ignore-conflicts
   environment:
     name: sandboxdev
     url: <REDACTED>
@@ -79,7 +79,7 @@ deploy:sandboxuat:
   <<: *auth_sandboxuat
   script:
     # - sf project deploy start --source-dir force-app --target-org sandboxuat --test-level RunAllTestsInOrg
-    - sf project deploy start --source-dir force-app --target-org sandboxuat --test-level NoTestRun ‑‑ignore‑conflicts
+    - sf project deploy start --source-dir force-app --target-org sandboxuat --test-level NoTestRun --ignore-conflicts
   environment:
     name: sandboxuat
     url: <REDACTED>
