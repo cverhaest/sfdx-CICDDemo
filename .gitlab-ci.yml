@@ -27,7 +27,7 @@ validate:sandboxdev:
   stage: validate
   <<: *auth_sandboxdev
   script:
-    - sf project deploy start --source-dir force-app --target-org sandboxdev --dry-run --test-level NoTestRun
+    - sf project deploy start --source-dir force-app --target-org sandboxdev --dry-run --test-level RunSpecifiedTests --tests Rules_CTRL_TEST
   rules:
     - if: '$CI_COMMIT_BRANCH =~ /^feature\//'
     - if: '$CI_COMMIT_BRANCH == "develop"'
@@ -67,8 +67,7 @@ deploy:sandboxdev:
   <<: *auth_sandboxdev
   script:
     # - sf project deploy start --source-dir force-app --target-org sandboxdev --test-level RunLocalTests
-    # - sf project deploy start --source-dir force-app --target-org sandboxdev --test-level NoTestRun --ignore-conflicts
-    - sf project deploy start --source-dir force-app --target-org sandboxdev --ignore-conflicts --test-level RunSpecifiedTests --tests Rules_CTRL_TEST 
+    - sf project deploy start --source-dir force-app --target-org sandboxdev --test-level NoTestRun --ignore-conflicts
   environment:
     name: sandboxdev
     url: <REDACTED>
