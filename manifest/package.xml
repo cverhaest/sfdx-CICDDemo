@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <Package xmlns="http://soap.sforce.com/2006/04/metadata">
 	<types>
-		<members>Travel_Approval__c.Travel_Cost_cannot_be_greater_than_10000</members>
-		<members>Travel_Approval__c.Travel_Date_cannot_be_in_the_past</members>
-		<name>ValidationRule</name>
+		<members>Rules_CTRL</members>
+		<members>Rules_CTRL_TEST</members>
+		<name>ApexClass</name>
 	</types>
 	<version>67.0</version>
 </Package>
