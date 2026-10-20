@@ -3,7 +3,7 @@
     <fullName>Travel_Cost_cannot_be_greater_than_10000</fullName>
     <active>true</active>
     <errorConditionFormula>(ISNEW() || ISCHANGED(Travel_Cost__c)) 
-&amp;&amp; Travel_Cost__c &gt; 10000
+&amp;&amp; Travel_Cost__c &gt; 1000
 &amp;&amp; $Permission.Bypass_Validation_Rules = FALSE</errorConditionFormula>
     <errorDisplayField>Travel_Cost__c</errorDisplayField>
     <errorMessage>Travel Cost cannot be greater than 10.000</errorMessage>
